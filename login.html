@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Flora &amp; Pot | Indoor Plant Shop</title>
+    <meta name="description" content="Sign in to your Flora &amp; Pot account to manage your plant orders, wishlists, and exclusive member offers.">
+    <script src="tailwind.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100vh !important; width: 100vw !important; overflow: hidden !important; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .brand-font { font-family: 'Playfair Display', serif; }
+        :root {
+            --bg-color: #FAFCFB; --bg-secondary: #F0F7F2; --bg-card: #FFFFFF;
+            --text-main: #2C3D30; --text-muted: #5E7363;
+            --accent-color: #439A46; --accent-dark: #388E3C;
+            --border-color: #E4EBE5; --card-border: #D4E5D6;
+            --input-bg: #F0F7F2; --input-border: #D4E5D6;
+            --input-focus-bg: #FFFFFF; --input-text: #2C3D30; --input-icon: #7EA883;
+            --toggle-bg: #D4E5D6; --page-text: #5E7363;
+            --btn-shadow: 0 4px 14px -3px rgba(67,154,70,0.35);
+            --btn-shadow-hover: 0 8px 24px -4px rgba(67,154,70,0.55);
+            --card-shadow: 0 24px 60px rgba(44,61,48,0.10);
+        }
+        body.dark-mode {
+            --bg-color: #1A2A1C; --bg-secondary: #1F3122; --bg-card: #243527;
+            --text-main: #EFF7F0; --text-muted: #8FAF93;
+            --accent-color: #66BB6A; --accent-dark: #81C784;
+            --border-color: #3D4D40; --card-border: #3D5940;
+            --input-bg: #1A2A1C; --input-border: #3D5940;
+            --input-focus-bg: #1F3122; --input-text: #EFF7F0; --input-icon: #5E8063;
+            --toggle-bg: #3D5940; --page-text: #C5DBC8;
+            --btn-shadow: 0 4px 14px -3px rgba(102,187,106,0.30);
+            --btn-shadow-hover: 0 8px 24px -4px rgba(102,187,106,0.50);
+            --card-shadow: 0 24px 60px rgba(0,0,0,0.45);
+        }
+        body { background-color: var(--bg-color); display: flex; flex-direction: column; position: relative; transition: background-color 0.5s ease; }
+
+        /* PAGE BACKGROUND */
+        .page-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+        .page-bg::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 48%; height: 100%;
+            background: linear-gradient(160deg, #2C3D30 0%, #388E3C 60%, #439A46 100%);
+            clip-path: polygon(0 0, 88% 0, 100% 100%, 0 100%);
+            transition: all 0.5s;
+        }
+        body.dark-mode .page-bg::before { background: linear-gradient(160deg, #0F1F11 0%, #1F3D22 60%, #2A5230 100%); }
+        .leaf-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.07); }
+        .leaf-ring-1 { width: 480px; height: 480px; top: -160px; left: -160px; border-color: rgba(255,255,255,0.05); }
+        .leaf-ring-2 { width: 320px; height: 320px; top: -80px; left: -80px; border-color: rgba(255,255,255,0.09); }
+        .leaf-ring-3 { width: 500px; height: 500px; bottom: -200px; left: -100px; border-color: rgba(255,255,255,0.04); }
+        .page-bg-right { position: absolute; top: 0; right: 0; width: 52%; height: 100%; background: var(--bg-color); transition: background 0.5s; }
+        .deco-icon { position: absolute; font-size: 1.4rem; color: rgba(255,255,255,0.12); animation: floatDeco 8s ease-in-out infinite; }
+        .deco-icon:nth-child(4) { top: 8%; left: 5%; animation-delay: 0s; font-size: 2rem; }
+        .deco-icon:nth-child(5) { top: 22%; left: 30%; animation-delay: 1.5s; font-size: 1.1rem; }
+        .deco-icon:nth-child(6) { top: 48%; left: 8%; animation-delay: 3s; font-size: 1.7rem; }
+        .deco-icon:nth-child(7) { top: 70%; left: 22%; animation-delay: 0.8s; font-size: 1.2rem; }
+        .deco-icon:nth-child(8) { top: 85%; left: 5%; animation-delay: 2.2s; font-size: 2.2rem; }
+        .deco-icon:nth-child(9) { top: 35%; left: 18%; animation-delay: 4s; font-size: 0.9rem; }
+        @keyframes floatDeco {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.12; }
+            50% { transform: translateY(-14px) rotate(8deg); opacity: 0.22; }
+        }
+
+        /* BRAND PANEL */
+        .brand-panel { position: fixed; top: 50%; left: 0; width: 44%; transform: translateY(-50%); padding: 0 3rem 0 3.5rem; z-index: 5; display: none; }
+        @media (min-width: 900px) { .brand-panel { display: block; } }
+        .brand-panel .panel-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 3.5vw, 3.2rem); font-weight: 700;
+            color: #FFFFFF; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 10px;
+            margin-bottom: 1.5rem; letter-spacing: -0.5px;
+        }
+        .brand-panel .panel-tagline { font-size: clamp(0.85rem, 1.1vw, 1rem); color: rgba(255,255,255,0.75); font-weight: 400; line-height: 1.7; max-width: 340px; margin-bottom: 2rem; }
+        .brand-panel .stat-row { display: flex; gap: 2rem; }
+        .stat-item { text-align: left; }
+        .stat-item .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: #FFFFFF; }
+        .stat-item .stat-label { font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+        /* TOP BAR */
+        .top-bar { width: 100%; display: flex; justify-content: flex-end; align-items: center; padding: 1rem 1.5rem; gap: 1rem; z-index: 50; flex-shrink: 0; position: relative; }
+        .toggle { width: 40px; height: 22px; background: var(--toggle-bg); border: 1px solid var(--card-border); border-radius: 50px; position: relative; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
+        .toggle::before { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 2px; left: 3px; transition: 0.3s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        body.dark-mode .toggle::before { left: 19px; background: var(--accent-color); box-shadow: none; }
+        .top-btn-text { font-size: 0.65rem; font-weight: 700; color: var(--page-text); background: var(--bg-card); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .top-btn-text:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
+        /* MAIN WRAPPER */
+        .main-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 0.5rem 1rem 1rem; z-index: 10; position: relative; }
+        @media (min-width: 900px) { .main-wrapper { justify-content: flex-end; padding-right: 6vw; } }
+
+        /* LOGIN CARD */
+        .login-card {
+            background-color: var(--bg-card); border: 1px solid var(--card-border); border-radius: 20px;
+            padding: clamp(1.25rem, 3vh, 2rem) 2rem; width: 100%; max-width: 380px;
+            box-shadow: var(--card-shadow); display: flex; flex-direction: column;
+            gap: clamp(12px, 2vh, 16px); position: relative; overflow: hidden;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: cardSlideIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .login-card::before {
+            content: '\f06c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; bottom: -30px; right: -20px; font-size: 8rem;
+            color: var(--accent-color); opacity: 0.04; pointer-events: none; transform: rotate(-25deg); line-height: 1;
+        }
+        @keyframes cardSlideIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes panelFadeIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .brand-panel { animation: panelFadeIn 0.6s 0.15s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* LOGO */
+        .auth-logo { display: flex; justify-content: center; margin-bottom: 2px; }
+        .auth-logo a {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em;
+            color: var(--text-main); text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px; transition: color 0.2s;
+        }
+
+        /* HEADER */
+        .auth-header { text-align: center; }
+        .auth-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 3vh, 1.5rem); color: var(--text-main); font-weight: 600; margin-bottom: 3px; }
+        .auth-header p { font-size: clamp(0.75rem, 1.5vh, 0.8rem); color: var(--text-muted); margin: 0; font-weight: 500; }
+        .auth-header .accent-bar { width: 36px; height: 3px; border-radius: 10px; background: linear-gradient(90deg, var(--accent-color), var(--accent-dark)); margin: 8px auto 0; }
+
+        /* FORM */
+        form { display: flex; flex-direction: column; gap: clamp(10px, 1.5vh, 14px); margin: 0; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 0.65rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--input-icon); font-size: 0.85rem; pointer-events: none; transition: color 0.2s; }
+        .input-field {
+            width: 100%; height: clamp(40px, 5vh, 44px); padding: 0 14px 0 40px;
+            border: 1.5px solid var(--input-border); background-color: var(--input-bg);
+            color: var(--input-text); border-radius: 10px; font-size: 0.85rem; font-weight: 500;
+            font-family: 'Inter', sans-serif; transition: all 0.25s ease;
+        }
+        .input-field::placeholder { color: var(--input-icon); opacity: 0.8; font-weight: 400; }
+        .input-field:focus { outline: none; border-color: var(--accent-color); background-color: var(--input-focus-bg); box-shadow: 0 0 0 3px rgba(67,154,70,0.12); }
+        .input-field:focus ~ .input-icon { color: var(--accent-color); }
+        .password-field { padding-right: 38px !important; }
+        .password-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--input-icon); background: none; border: none; cursor: pointer; padding: 4px; font-size: 0.9rem; z-index: 5; transition: color 0.2s; }
+        .password-toggle:hover { color: var(--accent-color); }
+
+        /* UTILITY ROW */
+        .utility-row { display: flex; align-items: center; justify-content: space-between; margin: 2px 0 0; padding: 0; }
+        input[type="checkbox"] { width: 14px; height: 14px; border-radius: 4px; cursor: pointer; accent-color: var(--accent-color); }
+
+        /* AUTH BUTTON */
+        .auth-btn {
+            width: 100%; height: clamp(42px, 5vh, 46px);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
+            color: #FFFFFF; border: none; border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: var(--btn-shadow); margin-top: 4px; position: relative; overflow: hidden;
+        }
+        .auth-btn::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent); transition: left 0.4s ease; }
+        .auth-btn:hover::after { left: 140%; }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: var(--btn-shadow-hover); background: linear-gradient(135deg, var(--accent-dark) 0%, #2E7D32 100%); }
+        .auth-btn:active { transform: translateY(0); }
+        .auth-btn:disabled { opacity: 0.75; cursor: not-allowed; transform: none; }
+
+        /* DIVIDER */
+        .divider { text-align: center; position: relative; margin: 2px 0; }
+        .divider::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: var(--card-border); }
+        .divider span { position: relative; background: var(--bg-card); padding: 0 12px; color: var(--text-muted); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* SOCIAL BUTTONS */
+        .social-login { display: flex; justify-content: center; gap: 12px; }
+        .social-btn { width: 40px; height: 40px; border: 1.5px solid var(--input-border); border-radius: 10px; background-color: var(--input-bg); font-size: 1rem; color: var(--text-main); cursor: pointer; transition: all 0.22s ease; display: flex; align-items: center; justify-content: center; }
+        .social-btn:hover { background-color: var(--accent-color); border-color: var(--accent-color); color: #FFFFFF; transform: translateY(-2px); box-shadow: var(--btn-shadow-hover); }
+
+        /* FOOTER LINK */
+        .login-link { text-align: center; font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+        .login-link a { color: var(--accent-color); font-weight: 700; text-decoration: none; transition: all 0.2s; }
+        .login-link a:hover { color: var(--accent-dark); text-decoration: underline; }
+
+        /* RTL */
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .input-icon { left: auto; right: 14px; }
+        [dir="rtl"] .input-field { padding: 0 40px 0 14px !important; }
+        [dir="rtl"] .password-field { padding-right: 40px !important; padding-left: 38px !important; }
+        [dir="rtl"] .password-toggle { right: auto; left: 10px; }
+        [dir="rtl"] .btn-arrow { transform: rotate(180deg); }
+        [dir="rtl"] .brand-panel { left: auto; right: 0; padding: 0 3.5rem 0 3rem; }
+        [dir="rtl"] .page-bg::before { left: auto; right: 0; clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); }
+        [dir="rtl"] .stat-item { text-align: right; }
+        @media (min-width: 900px) { [dir="rtl"] .main-wrapper { justify-content: flex-start; padding-right: 0; padding-left: 6vw; } }
+
+        /* RESPONSIVE */
+        @media (max-width: 400px), (max-height: 650px) {
+            .login-card { padding: 1.25rem !important; width: 95%; gap: 12px !important; border-radius: 14px; }
+            form { gap: 10px !important; }
+            .auth-header p { display: none; }
+            .input-field { height: 38px !important; }
+            .auth-btn { height: 40px !important; }
+            .social-btn { width: 36px !important; height: 36px !important; font-size: 0.9rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="page-bg" aria-hidden="true">
+        <div class="leaf-ring leaf-ring-1"></div>
+        <div class="leaf-ring leaf-ring-2"></div>
+        <div class="leaf-ring leaf-ring-3"></div>
+        <i class="fa-solid fa-leaf deco-icon"></i>
+        <i class="fa-solid fa-seedling deco-icon"></i>
+        <i class="fa-solid fa-spa deco-icon"></i>
+        <i class="fa-solid fa-leaf deco-icon" style="transform: scaleX(-1);"></i>
+        <i class="fa-solid fa-seedling deco-icon"></i>
+        <i class="fa-solid fa-spa deco-icon"></i>
+        <div class="page-bg-right"></div>
+    </div>
+
+    <!-- LEFT BRAND PANEL (lg+) -->
+    <div class="brand-panel" role="complementary" aria-label="Brand information">
+        <a href="index.html" class="panel-logo">
+            <i class="fa-solid fa-seedling" style="color: rgba(255,255,255,0.8);"></i>
+            Flora &amp; Pot
+        </a>
+        <p class="panel-tagline">
+            Discover vibrant indoor plants and artisan-crafted pots. Breathe life into every corner of your home and workspace.
+        </p>
+        <div class="stat-row">
+            <div class="stat-item">
+                <div class="stat-num">200+</div>
+                <div class="stat-label">Plant Species</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">18k</div>
+                <div class="stat-label">Happy Gardeners</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">4.9&#9733;</div>
+                <div class="stat-label">Avg. Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP CONTROLS BAR -->
+    <div class="top-bar" role="toolbar" aria-label="Page controls">
+        <div class="flex items-center gap-2" style="cursor: pointer;" onclick="document.getElementById('theme-toggle').click()">
+            <i class="fas fa-sun text-xs" style="color: var(--page-text);"></i>
+            <div class="toggle" id="theme-toggle" role="switch" aria-label="Toggle dark mode"></div>
+            <i class="fas fa-moon text-xs" style="color: var(--page-text);"></i>
+        </div>
+        <button id="rtl-toggle" class="top-btn-text" aria-label="Toggle text direction">RTL Mode</button>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+        <div class="login-card" role="main">
+
+            <!-- LOGO — exact match: Playfair Display, 1.5rem, font-weight 600, tracking-tight -->
+            <div class="auth-logo">
+                <a href="index.html" aria-label="Flora &amp; Pot Home">
+                    <i class="fa-solid fa-seedling" style="color: var(--accent-color); font-size: 1.4rem;"></i>
+                    Flora &amp; Pot
+                </a>
+            </div>
+
+            <!-- HEADER -->
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <div class="accent-bar"></div>
+                <p style="margin-top: 6px;">Sign in to your garden account.</p>
+            </div>
+
+            <!-- FORM -->
+            <form id="login-form" novalidate>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" class="input-field" placeholder="you@example.com" autocomplete="email" required>
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" class="input-field password-field" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" required>
+                        <i class="fas fa-lock input-icon"></i>
+                        <button type="button" class="password-toggle" id="toggle-password" tabindex="-1" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye" id="toggle-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="utility-row">
+                    <label class="flex items-center cursor-pointer" style="gap: 6px;">
+                        <input type="checkbox" id="remember-me">
+                        <span style="font-size: 0.7rem; font-weight: 600; color: var(--text-muted);">Remember me</span>
+                    </label>
+                    <a href="#" style="font-size: 0.7rem; font-weight: 700; color: var(--text-main); white-space: nowrap; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="auth-btn" id="signin-btn">
+                    Sign In <i class="fas fa-arrow-right text-xs btn-arrow"></i>
+                </button>
+
+            </form>
+
+            <div class="divider"><span>Or authenticate with</span></div>
+
+            <div class="social-login" role="group" aria-label="Social sign-in options">
+                <button class="social-btn" type="button" title="Sign in with Google" aria-label="Sign in with Google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button class="social-btn" type="button" title="Sign in with Apple" aria-label="Sign in with Apple">
+                    <i class="fab fa-apple"></i>
+                </button>
+                <button class="social-btn" type="button" title="Sign in with X" aria-label="Sign in with X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </button>
+            </div>
+
+            <div class="login-link">
+                New to Flora &amp; Pot? <a href="register.html">Create an Account</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // THEME
+        const themeToggle = document.getElementById('theme-toggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+        themeToggle.onclick = (e) => {
+            e.stopPropagation();
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        };
+
+        // RTL
+        const rtlToggle = document.getElementById('rtl-toggle');
+        const savedDir = localStorage.getItem('dir') || 'ltr';
+        if (savedDir === 'rtl') { document.documentElement.dir = 'rtl'; rtlToggle.textContent = 'LTR Mode'; }
+        rtlToggle.addEventListener('click', () => {
+            const isRTL = document.documentElement.dir === 'rtl';
+            document.documentElement.dir = isRTL ? 'ltr' : 'rtl';
+            localStorage.setItem('dir', isRTL ? 'ltr' : 'rtl');
+            rtlToggle.textContent = isRTL ? 'RTL Mode' : 'LTR Mode';
+        });
+
+        // PASSWORD TOGGLE
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggle-icon');
+        togglePasswordBtn.addEventListener('click', () => {
+            const isHidden = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+            toggleIcon.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
+        });
+
+        // FORM SUBMIT
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('signin-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i>&nbsp;Signing in&hellip;';
+            btn.disabled = true;
+            setTimeout(() => { window.location.href = 'index.html'; }, 900);
+        });
+    </script>
+</body>
+</html>

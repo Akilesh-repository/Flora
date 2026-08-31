@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora & Pot - FAQ & Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* === THEME VARIABLES (Fresh & Lighter Botanical Theme) === */
+        :root {
+            --bg-color: #FAFCFB; 
+            --bg-secondary: #F0F7F2; 
+            --bg-card: #FFFFFF; 
+            --text-main: #2C3D30; 
+            --text-muted: #5E7363; 
+            --accent-color: #439A46; 
+            --accent-dark: #388E3C; 
+            --border-color: #E4EBE5; 
+            --nav-bg: rgba(255, 255, 255, 0.90);
+            --drawer-bg: #FFFFFF;
+            --drawer-text: #2C3D30;
+            --menu-hover-bg: rgba(67, 154, 70, 0.08); 
+        }
+
+        /* DARK MODE (Softened to Slate-Green to improve text visibility) */
+        body.dark-mode {
+            --bg-color: #242E26; 
+            --bg-secondary: #2C382E; 
+            --bg-card: #28332A; 
+            --text-main: #F0F7F2; 
+            --text-muted: #A5B8A8; 
+            --accent-color: #66BB6A; 
+            --accent-dark: #81C784; 
+            --border-color: #3D4D40; 
+            --nav-bg: rgba(36, 46, 38, 0.90);
+            --drawer-bg: #242E26;
+            --drawer-text: #F0F7F2;
+            --menu-hover-bg: rgba(102, 187, 106, 0.15); 
+        }
+
+        /* RTL SUPPORT */
+        [dir="rtl"] .fa-arrow-right-long,
+        [dir="rtl"] .fa-arrow-left-long { transform: rotate(180deg); }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--border-color); }
+
+        /* === ANIMATIONS === */
+        @keyframes subtleZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .animate-zoom { animation: subtleZoom 25s infinite alternate ease-in-out; }
+
+        /* === NAVBAR DESIGN (Floating Pill Style) === */
+        .navbar { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+            width: calc(100% - 40px); max-width: 1400px; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color); border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            padding: 10px 24px; transition: all 0.3s ease;
+        }
+        
+        .nav-link { 
+            position: relative; padding: 10px 20px; margin: 0 2px;
+            color: var(--text-main); text-decoration: none; font-size: 13.5px; 
+            font-weight: 600; text-transform: capitalize; letter-spacing: 0.3px; 
+            transition: all 0.3s ease; border-radius: 30px;
+            display: inline-flex; align-items: center; gap: 6px; cursor: pointer; 
+        }
+        
+        .nav-link:hover, .nav-link.active, .dropdown:hover .nav-link { 
+            background-color: var(--accent-color); color: #FFFFFF; 
+        }
+        
+        /* Dropdowns */
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { 
+            position: absolute; top: 100%; left: 0; transform: translateY(15px); 
+            margin-top: 5px; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; 
+        }
+        .dropdown-inner { 
+            background: var(--bg-card); border: 1px solid var(--border-color); 
+            border-radius: 12px; min-width: 220px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); padding: 8px 0; 
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .dropdown-item { 
+            display: block; padding: 12px 20px; 
+            color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 500; 
+            transition: all 0.2s; text-align: start; white-space: nowrap; border-inline-start: 3px solid transparent;
+        }
+        .dropdown-item:hover { 
+            background: var(--menu-hover-bg); color: var(--accent-color); padding-inline-start: 24px; border-inline-start-color: var(--accent-color);
+        }
+
+        /* PILL TOGGLE */
+        .theme-toggle-pill { 
+            width: 56px; height: 30px; 
+            background: var(--bg-card); 
+            border-radius: 30px; position: relative; cursor: pointer; 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 8px; border: 1px solid var(--text-muted); 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .theme-toggle-pill i { font-size: 12px; z-index: 1; }
+        .theme-toggle-pill .fa-sun { color: #f59e0b; }
+        .theme-toggle-pill .fa-moon { color: #6b7280; }
+        .theme-toggle-pill .thumb { 
+            position: absolute; top: 2px; inset-inline-start: 2px; width: 24px; height: 24px; 
+            background: var(--text-main); border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3); z-index: 2; 
+        }
+        body.dark-mode .theme-toggle-pill .thumb { transform: translateX(26px); background: var(--text-main); }
+        [dir="rtl"] body.dark-mode .theme-toggle-pill .thumb { transform: translateX(-26px); }
+
+        /* BUTTONS */
+        .btn { 
+            padding: 12px 28px; font-weight: 700; font-size: 12px; text-transform: uppercase; 
+            letter-spacing: 1px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: inline-flex; align-items: center; justify-content: center; 
+            cursor: pointer; border-radius: 50px; box-sizing: border-box; 
+        }
+        .btn-solid { 
+            background: var(--accent-color); color: #FFFFFF !important; 
+            border: none; box-shadow: 0 4px 15px -3px var(--accent-color); 
+        }
+        .btn-solid:hover { 
+            background: var(--accent-dark); transform: scale(1.05); 
+            box-shadow: 0 8px 25px -5px var(--accent-dark); 
+        }
+        
+        .btn-outline { 
+            border: 1px solid var(--border-color); 
+            color: var(--text-main); 
+            background: var(--bg-card); 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05); 
+        }
+        .btn-outline:hover { 
+            border-color: var(--accent-color); color: var(--accent-color); 
+            background: var(--bg-secondary); transform: scale(1.05); 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        /* MOBILE OVERLAY BACKGROUND */
+        .drawer-overlay {
+            position: fixed; inset: 0; background: rgba(36, 46, 38, 0.8); z-index: 1000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px);
+        }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+        /* HAMBURGER MENU */
+        .fullscreen-menu { 
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 380px;
+            background: var(--drawer-bg); border-left: 1px solid var(--border-color);
+            z-index: 1001; display: flex; flex-direction: column; color: var(--drawer-text); 
+            opacity: 0; visibility: hidden; transform: translateX(100%); 
+            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1); box-shadow: -15px 0 40px rgba(0,0,0,0.05);
+        }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        
+        .mobile-link { 
+            display: block; width: 100%; padding: 16px 0;
+            font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-main); text-decoration: none; transition: all 0.3s; 
+            border-bottom: 1px dashed var(--border-color); text-align: start;
+        }
+        .mobile-link:hover { color: var(--accent-color); padding-inline-start: 8px; }
+
+        /* FOOTER */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding-top: 60px; }
+        footer h4 { color: var(--text-main); font-weight: 600; font-size: 1.1rem; margin-bottom: 20px; font-family: 'Playfair Display', serif;} 
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--text-main); background: var(--bg-card); }
+        .social-link-circle:hover { background: var(--accent-color); color: #FFFFFF; border-color: var(--accent-color); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-color); padding: 24px 0; margin-top: 40px; }
+
+        /* CUSTOM FAQ ACCORDION STYLES */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="font-medium">
+
+    <!-- NAVBAR PART -->
+    <nav class="navbar">
+        <div class="w-full flex items-center justify-between relative">
+            <div class="flex items-center flex-1 w-full justify-start">
+                <a href="index.html" class="brand-font text-2xl lg:text-3xl font-semibold tracking-tight" style="color: var(--text-main); text-decoration: none;">Flora & Pot</a>
+            </div>
+            
+            <div class="hidden xl:flex justify-center items-center shrink-0">
+                <div class="dropdown">
+                    <div class="nav-link">Home <i class="fa-solid fa-angle-down text-[10px] ms-1 opacity-70"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <!-- Set FAQ as active -->
+                <a href="faq.html" class="nav-link active">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <div class="hidden xl:flex items-center justify-end flex-1 w-full gap-2">
+                <div id="theme-toggle-desktop" class="theme-toggle-pill" title="Toggle Dark Mode">
+                    <i class="fa-regular fa-sun"></i><i class="fa-regular fa-moon"></i><div class="thumb"></div>
+                </div>
+                <button id="rtl-btn" class="text-[10px] font-black text-[var(--text-main)] bg-[var(--bg-card)] hover:text-white hover:bg-[var(--accent-color)] transition-all uppercase tracking-widest border border-[var(--text-muted)] px-3 py-1.5 rounded-full shadow-sm">RTL</button>
+                <a href="login.html" class="btn btn-outline min-w-[95px] h-[38px] !p-0 !text-[11px] flex items-center justify-center ms-2">Login</a> 
+                <a href="register.html" class="btn btn-solid min-w-[95px] h-[38px] !p-0 !text-[11px] flex items-center justify-center">Register</a>
+            </div>
+
+            <div class="xl:hidden flex items-center justify-end flex-1 w-full">
+                <button id="mobile-btn" class="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] flex items-center justify-center text-[var(--text-main)] hover:text-white hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)] transition-all shadow-sm">
+                    <i class="fa-solid fa-bars-staggered text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- HAMBURGER/DRAWER PART -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <div class="w-full px-6 py-5 flex justify-between items-center border-b border-[var(--border-color)] shrink-0 bg-[var(--bg-secondary)]">
+            <a href="index.html" class="brand-font text-2xl lg:text-3xl font-semibold tracking-tight" style="color: var(--text-main); text-decoration: none;">Flora & Pot</a>
+            <button id="close-menu" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] transition-all text-lg bg-[var(--bg-card)] text-[var(--text-muted)]">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="flex flex-col items-start justify-start px-6 py-4 w-full overflow-y-auto flex-1">
+            <a href="index.html" class="mobile-link">Home Page 1</a>
+            <a href="home-2.html" class="mobile-link">Home Page 2</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link">Services</a>
+            <a href="pricing.html" class="mobile-link">Pricing</a>
+            <a href="blog.html" class="mobile-link">Blog</a>
+            <a href="faq.html" class="mobile-link" style="color: var(--accent-color); border-top: 1px dashed var(--border-color);">FAQ</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+        </div>
+        <div class="w-full px-6 py-6 border-t border-[var(--border-color)] flex flex-col gap-5 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-semibold text-[10px] uppercase tracking-widest">Theme:</span>
+                    <div id="theme-toggle-mobile" class="theme-toggle-pill"><i class="fa-regular fa-sun"></i><i class="fa-regular fa-moon"></i><div class="thumb"></div></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-semibold text-[10px] uppercase tracking-widest">Layout:</span>
+                    <button id="rtl-toggle-mobile" class="text-[10px] font-black text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--text-muted)] px-3 py-1.5 rounded-full hover:border-[var(--accent-color)] transition-colors shadow-sm">LTR / RTL</button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-3 w-full mt-2">
+                <a href="login.html" class="btn btn-outline w-full !py-3">Login</a>
+                <a href="register.html" class="btn btn-solid w-full !py-3">Register</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- HERO BANNER PART -->
+    <section class="relative w-full min-h-[100dvh] flex flex-col justify-center items-center pt-32 pb-20 overflow-hidden text-center">
+        <div class="absolute inset-0 z-0 bg-[#242E26]">
+            <!-- Updated Image to match FAQ theme -->
+            <img src="images/pexels-silverkblack-36729237.jpg" alt="Plant Support & FAQ" class="w-full h-full object-cover object-center animate-zoom opacity-50" />
+            <div class="absolute inset-0 bg-gradient-to-b from-[#242E26]/90 via-[#242E26]/50 to-[#242E26]/90"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-4xl mx-auto px-6 flex flex-col items-center">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold uppercase tracking-widest mb-8 backdrop-blur-md shadow-lg">
+                <i class="fa-regular fa-circle-question text-[var(--accent-color)]"></i> Support Center
+            </div>
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-semibold leading-tight mb-8 text-white tracking-tight brand-font">
+                How Can We <br>
+                <span style="color: var(--accent-color);">Help You?</span>
+            </h1>
+            <p class="text-[#F0F7F2] text-base md:text-xl leading-relaxed max-w-2xl font-light mb-12 opacity-95">
+                Find quick answers to common questions about our shipping policies, return guarantees, and basic plant care guidelines below.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center">
+                <a href="contact.html" class="btn btn-solid w-full sm:w-auto group !py-4 !px-10 text-sm flex justify-center items-center gap-3">
+                    <span>Contact Support</span>
+                    <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"></i>
+                </a>
+                <a href="user.html" class="btn border-2 border-white/40 text-white hover:bg-white hover:text-[#242E26] w-full sm:w-auto !py-4 !px-10 text-sm transition-all flex justify-center items-center gap-3 backdrop-blur-sm">
+                    <i class="fa-solid fa-truck-fast text-lg"></i> Track Order
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MULTI-SECTION FAQ ACCORDION -->
+    <main class="py-24 bg-[var(--bg-color)] relative border-b border-[var(--border-color)] min-h-[50vh]">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            <div class="text-center mb-16">
+                <span class="text-[var(--accent-color)] font-semibold text-xs uppercase tracking-widest block mb-3">Knowledge Base</span>
+                <h2 class="text-3xl md:text-5xl font-semibold brand-font mb-4" style="color: var(--text-main);">Frequently Asked Questions</h2>
+                <p class="text-[var(--text-muted)] text-lg">Everything you need to know about shopping with Flora & Pot.</p>
+            </div>
+
+            <!-- FAQ SECTION 1: Shipping & Orders -->
+            <div class="mb-16">
+                <div class="flex items-center gap-3 mb-8 pb-4 border-b border-[var(--border-color)]">
+                    <i class="fa-solid fa-box-open text-2xl text-[var(--accent-color)]"></i>
+                    <h3 class="text-2xl font-semibold brand-font text-[var(--text-main)]">Shipping & Orders</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Q1 (Removed 'open' attribute as requested) -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>How do you safely ship live plants?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>We use custom-engineered, eco-friendly corrugated packaging that completely secures the nursery pot and protects the foliage from being crushed. For winter shipments, we automatically include complimentary heat packs to prevent freezing during transit.</p>
+                        </div>
+                    </details>
+                    <!-- Q2 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>What is your 30-Day Guarantee?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>We guarantee that your plant will arrive in happy, healthy condition. If your plant dies or arrives severely damaged within the first 30 days of receipt, simply email us a photo and your order number. We will issue a replacement or a full refund, no questions asked.</p>
+                        </div>
+                    </details>
+                    <!-- Q3 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>Do you ship internationally?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Currently, due to strict agricultural and customs regulations regarding live soil and plants, we only ship within the contiguous United States. We hope to expand to Canada and Mexico in the near future.</p>
+                        </div>
+                    </details>
+                    <!-- Q4 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>How can I track my order?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Once your order is processed and leaves our greenhouse, you will receive an email containing a tracking number and a link to our carrier's website. You can also view live tracking updates via the "Track Order" button in your user dashboard.</p>
+                        </div>
+                    </details>
+                    <!-- Q5 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>What payment methods do you accept?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, Google Pay, and offer split-payment options through Afterpay for larger orders and subscription plans.</p>
+                        </div>
+                    </details>
+                    <!-- Q6 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>Can I change or cancel my order after placing it?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Because we process live plant orders quickly to minimize transit time, we can only accept cancellations or modifications within 2 hours of placing the order. Please contact our support team immediately if you need assistance.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- FAQ SECTION 2: Plant Care & Services -->
+            <div>
+                <div class="flex items-center gap-3 mb-8 pb-4 border-b border-[var(--border-color)]">
+                    <i class="fa-solid fa-seedling text-2xl text-[var(--accent-color)]"></i>
+                    <h3 class="text-2xl font-semibold brand-font text-[var(--text-main)]">Plant Care & Services</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>Do you offer repotting services for plants not bought here?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Yes! Our in-store repotting and rehabilitation clinic is open to all plants, regardless of where they were purchased. Pricing is based on the diameter of the pot and the type of organic soil required for your specific plant species.</p>
+                        </div>
+                    </details>
+                    <!-- Q2 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>Are your plants safe for cats and dogs?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Not all of them, but we make it easy to find the ones that are. We have a dedicated "Pet-Friendly" category in our shop. All plants in this section are verified non-toxic to cats and dogs according to ASPCA guidelines.</p>
+                        </div>
+                    </details>
+                    <!-- Q3 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>How do I cancel or modify my subscription plan?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>You can easily pause, modify, or cancel your maintenance subscription at any time by logging into the "Customer Login" portal. Navigating to the "Subscriptions" tab will give you full control over your billing cycle and service dates.</p>
+                        </div>
+                    </details>
+                    <!-- Q4 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>What should I do if my plant arrives with yellow leaves?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>It is perfectly normal for a plant to lose a bottom leaf or two due to transit shock. Give it a few days to acclimate to your home's lighting before watering. If the yellowing spreads rapidly, please reach out to our support team with a photo!</p>
+                        </div>
+                    </details>
+                    <!-- Q5 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>Do you provide ongoing care advice after purchase?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Absolutely! Every order includes a detailed digital care card. Additionally, you are always welcome to email our botanists with pictures of your plant for free, lifetime troubleshooting and advice.</p>
+                        </div>
+                    </details>
+                    <!-- Q6 -->
+                    <details class="group bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[24px] overflow-hidden shadow-sm hover:border-[var(--accent-color)] transition-colors">
+                        <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-[var(--text-main)] hover:text-[var(--accent-color)] transition-colors text-lg">
+                            <span>How often should I water my new indoor plant?</span>
+                            <span class="transition transform group-open:rotate-180"><i class="fa-solid fa-chevron-down text-[var(--accent-color)] text-sm"></i></span>
+                        </summary>
+                        <div class="text-[var(--text-muted)] text-sm leading-relaxed px-6 pb-6">
+                            <p>Watering frequency depends heavily on the plant species, your home's humidity, and light exposure. Always check the top 2 inches of soil with your finger before watering. If it feels dry, it's usually safe to water. Check your specific plant's care card for precise details.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Contact Support CTA -->
+            <div class="mt-16 text-center bg-[var(--bg-secondary)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm hover:shadow-md transition-shadow">
+                <h3 class="text-xl font-bold brand-font text-[var(--text-main)] mb-2">Still have questions?</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-6">Our botanists are standing by to help you out.</p>
+                <a href="contact.html" class="btn btn-outline !py-3 !px-8 text-sm"><i class="fa-regular fa-envelope mr-2"></i> Email Support</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER PART -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-10 pt-4">
+                <div class="lg:col-span-4">
+                    <div class="mb-6">
+                        <a href="index.html" class="brand-font text-2xl lg:text-3xl font-semibold tracking-tight" style="color: var(--text-main); text-decoration: none;">Flora & Pot</a>
+                    </div>
+                    <p class="opacity-80 leading-relaxed text-sm mb-6 max-w-sm" style="color: var(--text-muted);">
+                        Your local sanctuary for exotic indoor plants and hand-crafted flower pots. We believe in transforming spaces with the simple beauty of nature.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="social-link-circle"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="#" class="social-link-circle"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h4>Shop Portal</h4>
+                            <ul class="space-y-3">
+                                <li><a href="login.html">Customer Login</a></li>
+                                <li><a href="pricing.html">Shop All Plants</a></li>
+                                <li><a href="user.html">Order History</a></li>
+                                <li><a href="#">Shipping Info</a></li>
+                                <li><a href="#">Return Policy</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Categories</h4>
+                            <ul class="space-y-3">
+                                <li><a href="services.html">Pet-Friendly Plants</a></li>
+                                <li><a href="services.html">Low Light Tolerant</a></li>
+                                <li><a href="services.html">Large Floor Plants</a></li>
+                                <li><a href="services.html">Ceramic Pots</a></li>
+                                <li><a href="services.html">Hanging Planters</a></li>
+                            </ul>
+                        </div>
+                        <div class="sm:col-span-2 md:col-span-1">
+                            <h4>Store Details</h4>
+                            <ul class="space-y-3 text-[var(--text-muted)] text-sm">
+                                <li class="flex items-start"><i class="fa-solid fa-location-dot mt-1 me-3 shrink-0" style="color: var(--accent-color);"></i><span>108 Greenery Lane<br>Portland, OR 97204</span></li>
+                                <li class="flex items-center"><i class="fa-solid fa-phone me-3 shrink-0" style="color: var(--accent-color);"></i><a href="tel:+18005557687" class="break-all">1-800-555-POTS</a></li>
+                                <li class="flex items-center"><i class="fa-regular fa-envelope me-3 shrink-0" style="color: var(--accent-color);"></i><a href="mailto:hello@floraandpot.com" class="break-all">hello@floraandpot.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom flex flex-col md:flex-row justify-between items-center text-sm gap-4">
+                <p style="color: var(--text-muted);">&copy; 2026 Flora & Pot Shop. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Shipping Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        const mobileBtn = document.getElementById('mobile-btn'); 
+        const fullscreenMenu = document.getElementById('fullscreen-menu'); 
+        const closeMenu = document.getElementById('close-menu'); 
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        
+        function toggleMenu() { 
+            fullscreenMenu.classList.toggle('active'); 
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        
+        mobileBtn.onclick = toggleMenu; 
+        closeMenu.onclick = toggleMenu; 
+        drawerOverlay.onclick = toggleMenu; 
+        
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile'); 
+        const theme = localStorage.getItem('theme') || 'light';
+
+        function updateThemeUI(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode'); 
+                if(themeMobile) themeMobile.classList.add('active');
+            } else {
+                document.body.classList.remove('dark-mode');
+                if(themeMobile) themeMobile.classList.remove('active');
+            }
+        }
+        
+        updateThemeUI(theme === 'dark');
+        
+        function toggleTheme() { 
+            const isDark = !document.body.classList.contains('dark-mode');
+            updateThemeUI(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light'); 
+        }
+        
+        themeDesktop.onclick = toggleTheme; 
+        if(themeMobile) themeMobile.onclick = toggleTheme;
+        
+        const rtlBtn = document.getElementById('rtl-btn'); 
+        const rtlMobile = document.getElementById('rtl-toggle-mobile'); 
+        const dir = localStorage.getItem('dir') || 'ltr';
+        
+        if (dir === 'rtl') { 
+            document.documentElement.dir = 'rtl'; 
+        }
+        
+        function toggleRTL() { 
+            const isRTL = document.documentElement.dir === 'rtl'; 
+            document.documentElement.dir = isRTL ? 'ltr' : 'rtl'; 
+            localStorage.setItem('dir', isRTL ? 'ltr' : 'rtl'); 
+        }
+        
+        rtlBtn.onclick = toggleRTL; 
+        if(rtlMobile) rtlMobile.onclick = toggleRTL;
+    </script>
+</body>
+</html>
